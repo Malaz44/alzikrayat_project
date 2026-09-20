@@ -15,7 +15,9 @@
         <p style="color: red; text-align: center;"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <form action="register" method="post">
+    <form action="auth" method="post">
+        <input type="hidden" name="action" value="register">
+        
         <div class="form-group">
             <label>first name:</label>
             <input type="text" name="f_name" required>
