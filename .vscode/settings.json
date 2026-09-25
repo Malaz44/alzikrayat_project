@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\eslamia\\Documents\\apache-tomcat-9.0.122\\lib\\servlet-api.jar",
+        "c:\\Users\\eslamia\\Documents\\apache-tomcat-9.0.122\\lib\\jsp-api.jar",
+        "c:\\Users\\eslamia\\Documents\\apache-tomcat-9.0.122\\webapps\\alzikrayat\\web-inf\\lib\\mysql-connector-j-26.7.0.jar"
+    ],
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
+}

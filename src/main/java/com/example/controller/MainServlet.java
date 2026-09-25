@@ -1,10 +1,12 @@
 package com.example.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/")
 public class MainServlet extends HttpServlet {
@@ -19,11 +21,20 @@ public class MainServlet extends HttpServlet {
             case "/login":
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
                 break;
+
             case "/register":
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 break;
+
+            case "/main":
             default:
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                HttpSession session = request.getSession(false);
+                if (session != null && session.getAttribute("userId") != null) {
+                    request.getRequestDispatcher("/main.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/login");
+                }
+                break;
         }
     }
 }

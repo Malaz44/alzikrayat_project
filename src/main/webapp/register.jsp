@@ -37,7 +37,7 @@
         <button type="submit">Register</button>
     </form>
 
-    <a href="login" class="link">Already have account? Login here</a>
+    <a href="login.jsp" class="link">Already have account? Login here</a>
 </div>
 
 </body>
