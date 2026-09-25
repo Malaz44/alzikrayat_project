@@ -1,6 +1,7 @@
 # Project Name: Alzikrayat photo sharing application
 
-# Description : An MVC-based photo-sharing web application enables users to create accounts, authenticate securely, write memories, upload images with descriptions, view community photo galleries and comment on shared memories.
+# Description
+An MVC-based photo-sharing web application enables users to create accounts, authenticate securely, write memories, upload images with descriptions, view community photo galleries and comment on shared memories.
 
 # Technologies
 language: Java
