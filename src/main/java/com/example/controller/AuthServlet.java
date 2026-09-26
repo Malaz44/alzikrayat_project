@@ -60,10 +60,25 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        if (password == null || password.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/register.jsp?error=empty_fields");
-            return;
-        }
+        if (f_Name == null || f_Name.trim().isEmpty() || !f_Name.matches("[A-Za-z]+")) {
+    response.sendRedirect(request.getContextPath() + "/register.jsp?error=invalid_name");
+    return;
+}
+
+if (l_Name == null || l_Name.trim().isEmpty() || !l_Name.matches("[A-Za-z]+")) {
+    response.sendRedirect(request.getContextPath() + "/register.jsp?error=invalid_name");
+    return;
+}
+
+if (email == null || !email.matches("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$")) {
+    response.sendRedirect(request.getContextPath() + "/register.jsp?error=invalid_email");
+    return;
+}
+
+if (password == null || password.length() < 6) {
+    response.sendRedirect(request.getContextPath() + "/register.jsp?error=weak_password");
+    return;
+}
 
         String hashedPassword = hashPasswordSHA256(password);
         String sql = "INSERT INTO users (f_name, l_name, email, password) VALUES (?, ?, ?, ?)";
