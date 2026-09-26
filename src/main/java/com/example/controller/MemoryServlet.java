@@ -27,7 +27,7 @@ public class MemoryServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/views/auth/login.jsp");
             return;
         }
 
@@ -39,13 +39,13 @@ public class MemoryServlet extends HttpServlet {
             if (memoryIdParam != null) {
                 deleteMemory(Integer.parseInt(memoryIdParam), userId);
             }
-            response.sendRedirect(request.getContextPath() + "/main.jsp");
+            response.sendRedirect(request.getContextPath() + "/memory");
             return;
         }
 
         List memories = getMemoriesByUserId(userId);
         request.setAttribute("memories", memories);
-        request.getRequestDispatcher("/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/photos/main.jsp").forward(request, response);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class MemoryServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("userId") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
+    response.sendRedirect(request.getContextPath() + "/views/auth/login.jsp");
+    return;
         }
 
         int userId = (int) session.getAttribute("userId");

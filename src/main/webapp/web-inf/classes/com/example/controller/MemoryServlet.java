@@ -45,7 +45,7 @@ public class MemoryServlet extends HttpServlet {
 
         List memories = getMemoriesByUserId(userId);
         request.setAttribute("memories", memories);
-        request.getRequestDispatcher("/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/photos/main.jsp").forward(request, response);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MemoryServlet extends HttpServlet {
             saveMemory(userId, title, content);
         }
 
-        response.sendRedirect(request.getContextPath() + "/memory");
+        response.sendRedirect(request.getContextPath() + "/views/photos/main.jsp");
     }
 
     private void saveMemory(int userId, String title, String content) {
