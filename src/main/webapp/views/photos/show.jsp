@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.example.model.Photo" %>
+<%@ page import="com.example.model.Comment" %>
+<%@ page import="java.util.List" %>
 <%
     Photo photo = (Photo) request.getAttribute("photo");
+    List<Comment> comments = (List<Comment>) request.getAttribute("comments");
     Integer userId = (Integer) session.getAttribute("userId");
 %>
 <!DOCTYPE html>
@@ -28,7 +31,34 @@
     <% } %>
 
     <a href="<%= request.getContextPath() %>/photo" class="btn btn-outline-secondary btn-sm mt-3">Back to Gallery</a>
-    
+
+    <hr>
+
+    <h4>Comments</h4>
+
+    <% if (comments == null || comments.isEmpty()) { %>
+        <p class="text-muted">No comments yet.</p>
+    <% } else { %>
+        <% for (Comment c : comments) { %>
+            <div class="border rounded p-2 mb-2">
+                <strong><%= c.getUserName() %></strong>
+                <p class="mb-0"><%= c.getComment() %></p>
+                <small class="text-muted"><%= c.getDateTime() %></small>
+            </div>
+        <% } %>
+    <% } %>
+
+    <% if (userId != null) { %>
+        <form action="<%= request.getContextPath() %>/comment" method="post" class="mt-3">
+            <input type="hidden" name="photoId" value="<%= photo.getId() %>">
+            <div class="mb-2">
+                <textarea name="comment" class="form-control" placeholder="Write a comment..." rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Add Comment</button>
+        </form>
+    <% } else { %>
+        <p><a href="<%= request.getContextPath() %>/login">Login</a> to add a comment.</p>
+    <% } %>
 
 </body>
 </html>

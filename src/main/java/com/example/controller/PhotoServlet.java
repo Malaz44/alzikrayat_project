@@ -108,34 +108,61 @@ public class PhotoServlet extends HttpServlet {
         request.getRequestDispatcher("/views/photos/upload.jsp").forward(request, response);
     }
 
-    private void showPhotoDetails(int photoId, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+   private void showPhotoDetails(int photoId, HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
 
-        Photo photo = null;
-        String sql = "SELECT * FROM photos WHERE id = ?";
+    Photo photo = null;
+    String sql = "SELECT * FROM photos WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, photoId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    photo = mapRowToPhoto(rs);
-                }
+        stmt.setInt(1, photoId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                photo = mapRowToPhoto(rs);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        if (photo == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Photo not found");
-            return;
-        }
-
-        request.setAttribute("photo", photo);
-        request.getRequestDispatcher("/views/photos/show.jsp").forward(request, response);
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    if (photo == null) {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Photo not found");
+        return;
+    }
+
+    List<com.example.model.Comment> comments = new ArrayList<>();
+    String commentSql = "SELECT c.*, u.f_name, u.l_name FROM comments c " +
+                         "JOIN users u ON c.user_id = u.id " +
+                         "WHERE c.photo_id = ? ORDER BY c.date_time ASC";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(commentSql)) {
+
+        stmt.setInt(1, photoId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                com.example.model.Comment c = new com.example.model.Comment();
+                c.setId(rs.getInt("id"));
+                c.setPhotoId(rs.getInt("photo_id"));
+                c.setUserId(rs.getInt("user_id"));
+                c.setUserName(rs.getString("f_name") + " " + rs.getString("l_name"));
+                c.setComment(rs.getString("comment"));
+                c.setDateTime(rs.getTimestamp("date_time"));
+                comments.add(c);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    request.setAttribute("photo", photo);
+    request.setAttribute("comments", comments);
+    request.getRequestDispatcher("/views/photos/show.jsp").forward(request, response);
+}
 
     private void storePhoto(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

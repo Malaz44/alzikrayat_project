@@ -30,7 +30,11 @@ public class MainServlet extends HttpServlet {
             getServletContext().getNamedDispatcher("default").forward(request, response);
             return;
         }
-
+       
+        if (path.equals("/") || path.isEmpty()) {
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            return;
+        }
         switch (path) {
             case "/login":
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
