@@ -11,13 +11,28 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
 
 @WebServlet("/auth")
 public class AuthServlet extends HttpServlet {
+
+    @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+
+    String action = request.getParameter("action");
+
+    if ("logout".equalsIgnoreCase(action)) {
+        handleLogout(request, response);
+    } else {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+    }
+}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -102,6 +117,11 @@ public class AuthServlet extends HttpServlet {
                         session.setAttribute("userId", rs.getInt("id"));
                         session.setAttribute("userEmail", rs.getString("email"));
                         session.setAttribute("userName", rs.getString("f_name") + " " + rs.getString("l_name"));
+                        
+                Cookie lastLoginCookie = new Cookie("lastLogin", java.time.LocalDateTime.now().toString());
+                lastLoginCookie.setMaxAge(7 * 24 * 60 * 60);
+                lastLoginCookie.setPath("/");
+                response.addCookie(lastLoginCookie);
 
                         response.sendRedirect(request.getContextPath() + "/main.jsp");
                     } else {
