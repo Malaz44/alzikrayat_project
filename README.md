@@ -5,7 +5,7 @@ An MVC-based photo-sharing web application enables users to create accounts, aut
 
 # Technologies
 language: Java
-architecture: Model-View-Controller (MVC)
+architecture: Model-View-Controller (MVC) & 3-tier architecture
 frontend: HTML, CSS, Javascript and Bootstrap5
 web server: Apache Tomcat 9.0
 database: MySQL
